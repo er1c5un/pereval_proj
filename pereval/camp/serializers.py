@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
-from rest_framework.relations import PrimaryKeyRelatedField
 
 from .models import Tourists, Pereval, Coords, Level, Images
 
