@@ -62,7 +62,7 @@ class PerevalSerializer(serializers.ModelSerializer):
             'title',
             'other_titles',
             'connect',
-            'users_id',
+            'tourists_id',
             'coord_id',
             'level_id',
             'images',
