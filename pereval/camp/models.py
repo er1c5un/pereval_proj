@@ -2,6 +2,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+class PerevalManager(models.Manager):
+    def submit_data(self, name, description):
+        pereval_instance = self.create(name=name, description=description)
+        return pereval_instance
+
+
 class Tourists(models.Model):
     """
     Модель пользователей (туристов)

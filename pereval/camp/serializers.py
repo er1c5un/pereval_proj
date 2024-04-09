@@ -73,19 +73,20 @@ class PerevalSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        tourist_id = validated_data.get('tourist_id', {})
-        coord_id = validated_data.get('coord_id', {})
-        level = validated_data.get('level', {})
-        images = validated_data.get('images', {})
+        tourist_id = validated_data.pop('tourists_id')
+        coord_id = validated_data.pop('coord_id')
+        level = validated_data.pop('level_id')
+        images = validated_data.pop('images')
 
-        tourist_id, created = Tourists.object.get_or_create(**tourist_id)
+        tourist_id, created = Tourists.objects.get_or_create(**tourist_id)
         coord_id = Coords.objects.create(**coord_id)
+        print(f"!!!! {coord_id}")
         level = Level.objects.create(**level)
-        pereval = Pereval.objects.create(**validated_data, tourist_id=tourist_id, coord_id=coord_id, level=level,
-                                         status="NW")
+        pereval = Pereval.objects.create(**validated_data, tourist_id=tourist_id, coord_id=coord_id, level_id=level)
 
         for i in images:
-            image = i.pop('image')
+            print(f"!!! i {i}")
+            image = i.pop('images')
             title = i.pop('title')
             Images.objects.create(image=image, pereval_id=pereval, title=title)
 
