@@ -50,7 +50,7 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class PerevalSerializer(serializers.ModelSerializer):
-    tourists_id = TouristsSerializer()
+    tourist_id = TouristsSerializer()
     coord_id = CoordsSerializer()
     level_id = LevelSerializer()
     images = ImagesSerializer(many=True)
@@ -62,7 +62,7 @@ class PerevalSerializer(serializers.ModelSerializer):
             'title',
             'other_titles',
             'connect',
-            'tourists_id',
+            'tourist_id',
             'coord_id',
             'level_id',
             'images',
@@ -73,7 +73,7 @@ class PerevalSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        tourist_id = validated_data.pop('tourists_id')
+        tourist_id = validated_data.pop('tourist_id')
         coord_id = validated_data.pop('coord_id')
         level = validated_data.pop('level_id')
         images = validated_data.pop('images')
