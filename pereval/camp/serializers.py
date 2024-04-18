@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from drf_writable_nested import WritableNestedModelSerializer
 from .models import Tourists, Pereval, Coords, Level, Images
 
 
@@ -49,7 +49,7 @@ class ImagesSerializer(serializers.ModelSerializer):
         fields = ['images', 'title']
 
 
-class PerevalSerializer(serializers.ModelSerializer):
+class PerevalSerializer(WritableNestedModelSerializer):
     tourist_id = TouristsSerializer()
     coord_id = CoordsSerializer()
     level_id = LevelSerializer()
@@ -77,7 +77,7 @@ class PerevalSerializer(serializers.ModelSerializer):
         coord_id = validated_data.pop('coord_id')
         level = validated_data.pop('level_id')
         images = validated_data.pop('images')
-
+        print(f'create --------------  {tourist_id}')
         tourist_id, created = Tourists.objects.get_or_create(**tourist_id)
         coord_id = Coords.objects.create(**coord_id)
         print(f"!!!! {coord_id}")
@@ -91,3 +91,18 @@ class PerevalSerializer(serializers.ModelSerializer):
             Images.objects.create(image=image, pereval_id=pereval, title=title)
 
         return pereval
+
+    def validate(self, data):
+        if self.instance is not None:
+            instance_user = self.instance.tourist_id
+            data_user = data.get('tourist_id')
+            validating_user_fields = [
+                instance_user.fam != data_user['fam'],
+                instance_user.name != data_user['name'],
+                instance_user.otc != data_user['otc'],
+                instance_user.phone != data_user['phone'],
+                instance_user.email != data_user['email'],
+            ]
+            if data_user is not None and any(validating_user_fields):
+                raise serializers.ValidationError({'Отклонено': 'Нельзя изменять данные пользователя'})
+        return data

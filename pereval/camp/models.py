@@ -15,7 +15,7 @@ class Tourists(models.Model):
     fam = models.CharField(max_length=100, verbose_name="Фамилия")
     name = models.CharField(max_length=100, verbose_name="Имя")
     otc = models.CharField(max_length=100, verbose_name="Отчество")
-    email = models.EmailField(max_length=100, unique=True, verbose_name="Почта")
+    email = models.EmailField(max_length=100, verbose_name="Почта")
     phone = models.CharField(max_length=20, verbose_name="Телефон")
 
 
